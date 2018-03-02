@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import logo from './../logo.svg';
+import logo from 'logo.svg';
+import { colors } from 'styles'
 
 class App extends Component {
   render() {
@@ -15,10 +16,9 @@ class App extends Component {
 
 
         <style jsx>{`
-          $mycolor: yellow;
 
           p {
-            color: $mycolor;
+            color: ${colors.primary};
           }
         `}</style>
       </div>
