@@ -1,19 +1,26 @@
-import React, { Component } from 'react';
-import logo from 'logo.svg';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { getPosts } from 'actions'
+import logo from 'logo.svg'
 import { colors } from 'styles'
+import _ from 'lodash'
+import Post from './Post'
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.getPosts();
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-
+        {this.props.posts.map( post =>
+          <Post
+            key={post.id}
+            post={post}
+          />
+        )}
 
         <style jsx>{`
 
@@ -26,4 +33,20 @@ class App extends Component {
   }
 }
 
-export default App;
+
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    posts: _.values(state.posts)
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getPosts: () => {
+      dispatch(getPosts())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
