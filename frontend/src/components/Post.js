@@ -6,9 +6,20 @@ class Post extends Component {
     const { post } = this.props
 
     return (
-      <div>
-        <h1>{post.title}</h1>
+      <div className="post">
+        <h1 className="ui header">{post.title}</h1>
         <p>{post.body}</p>
+
+
+        <style jsx>{`
+          div.post {
+            margin: 20px 0;
+          }
+
+          h1.ui.header {
+            margin-bottom: 0px;
+          }
+        `}</style>
       </div>
     )
   }
