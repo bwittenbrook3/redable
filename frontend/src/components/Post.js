@@ -3,12 +3,14 @@ import { Label, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { vote } from 'actions'
+import Moment from 'react-moment'
 
 class Post extends Component {
 
   render() {
     const { post, upvote, downvote } = this.props
 
+    console.log(post.timestamp)
     return (
       <div className="post">
         <div className="votes">
@@ -28,7 +30,9 @@ class Post extends Component {
           <Link to={`/${post.category}/${post.id}`}>
             <h1 className="ui header">
               {post.title}
-              <div className="sub header">{post.author}</div>
+              <div className="sub header">
+                Posted by <b>{post.author}</b> at <Moment format="YYYY/MM/DD @ HH:MM">{post.timestamp}</Moment>
+              </div>
             </h1>
           </Link>
           <Link to={`/${post.category}/${post.id}`}>

@@ -5,6 +5,7 @@ import { Grid } from 'semantic-ui-react'
 
 import Post from 'components/Post'
 import SideBar from 'components/SideBar'
+import SortBy from 'components/SortBy'
 
 class List extends Component {
 
@@ -22,6 +23,7 @@ class List extends Component {
             <SideBar />
           </Grid.Column>
           <Grid.Column width={12}>
+            <SortBy />
             {postsToDisplay.map( post =>
               <Post
                 key={post.id}
