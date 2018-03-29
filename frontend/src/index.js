@@ -8,6 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import 'semantic-ui-css/semantic.min.css';
+import { BrowserRouter } from 'react-router-dom'
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
@@ -20,7 +21,9 @@ const store = createStoreWithMiddleware(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );

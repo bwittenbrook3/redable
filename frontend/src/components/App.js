@@ -3,68 +3,36 @@ import { connect } from 'react-redux'
 import { getPosts, getCategories } from 'actions'
 import { colors } from 'styles'
 import _ from 'lodash'
-import Post from './Post'
-import { Grid, Menu } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
+
+import MainContent from './MainContent'
+import SideBar from './SideBar'
 
 class App extends Component {
-
-  state = {
-    activeCategory: null
-  }
 
   componentDidMount() {
     this.props.getPosts();
     this.props.getCategories();
   }
 
-  handleItemClick = (e, { name }) => {
-    this.setState({
-      activeCategory: name === 'All' ? null : name
-    })
-  }
-
   render() {
-    const { activeCategory } = this.state
-    const { categories, posts } = this.props
 
     return (
       <div className="App">
 
-
         <Grid>
           <Grid.Column width={4}>
-            <Menu text vertical>
-              <Menu.Item header>Categories</Menu.Item>
-
-              <Menu.Item
-                name='All'
-                active={activeCategory === null}
-                onClick={this.handleItemClick}
-              />
-
-              {categories.map(category =>
-                <Menu.Item
-                  key={category.name}
-                  name={category.name}
-                  active={activeCategory === category.name} onClick={this.handleItemClick}
-                />
-              )}
-            </Menu>
+            <SideBar />
           </Grid.Column>
           <Grid.Column width={12}>
-            {posts.map( post =>
-              <Post
-                key={post.id}
-                post={post}
-              />
-            )}
+            <MainContent />
           </Grid.Column>
         </Grid>
 
 
-
         <style jsx>{`
           :global(body) {
+            padding: 20px;
             background-color: papayawhip;
           }
 
@@ -103,7 +71,6 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    posts: _.values(state.posts),
     categories: _.values(state.categories)
   }
 }
