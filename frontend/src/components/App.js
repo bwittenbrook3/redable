@@ -5,6 +5,7 @@ import { colors } from 'styles'
 import { Switch, Route, withRouter } from 'react-router-dom'
 
 import ListPage from 'pages/List'
+import DetailPage from 'pages/Detail'
 
 
 class App extends Component {
@@ -20,14 +21,15 @@ class App extends Component {
       <div className="App">
 
         <Switch>
-          <Route exact path="/" component={ListPage}/>
+          <Route path='/:category/:id' component={DetailPage}/>
           <Route path='/:category' component={ListPage}/>
+          <Route exact path="/" component={ListPage}/>
         </Switch>
 
         <style jsx>{`
           :global(body) {
             padding: 20px;
-            background-color: papayawhip;
+            background-color: #ggg;
           }
 
           div.App{
