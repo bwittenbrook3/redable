@@ -1,21 +1,25 @@
 import React, { Component } from 'react'
 import { Label, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { vote } from 'actions'
 
 class Post extends Component {
 
   render() {
-    const { post } = this.props
+    const { post, upvote, downvote } = this.props
 
     return (
       <div className="post">
         <div className="votes">
           <Icon
+            onClick={() => upvote(post)}
             name='caret up'
             link
           />
           <span className="voteScore">{post.voteScore}</span>
           <Icon
+            onClick={() => downvote(post)}
             name='caret down'
             link
           />
@@ -81,4 +85,12 @@ class Post extends Component {
   }
 }
 
-export default Post
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    upvote: (post) => dispatch(vote(post, 'upVote')),
+    downvote: (post) => dispatch(vote(post, 'downVote'))
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(Post)
