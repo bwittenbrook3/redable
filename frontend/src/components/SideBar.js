@@ -2,22 +2,34 @@ import React, { Component } from 'react'
 import { Menu } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { withRouter } from 'react-router-dom'
 
 class SideBar extends Component {
 
-  state = {
-    activeCategory: null
-  }
-
   handleItemClick = (e, { name }) => {
-    this.setState({
-      activeCategory: name === 'All' ? null : name
-    })
+
+    // Change to the selected category
+    const { push } = this.props.history
+    if (name === 'All') {
+      push({
+        pathname: '/',
+        state: {}
+      })
+    } else {
+      push({
+        pathname: `/${name}`,
+        state: {}
+      })
+    }
   }
 
   render() {
-    const { activeCategory } = this.state
-    const { categories } = this.props
+    const { match, categories } = this.props
+
+    const { category } = match.params
+
+    const activeCategory =
+      category === 'All' ? undefined : category
 
     return (
       <Menu text vertical>
@@ -25,7 +37,7 @@ class SideBar extends Component {
 
         <Menu.Item
           name='All'
-          active={activeCategory === null}
+          active={activeCategory === undefined}
           onClick={this.handleItemClick}
         />
 
@@ -33,7 +45,8 @@ class SideBar extends Component {
           <Menu.Item
             key={category.name}
             name={category.name}
-            active={activeCategory === category.name} onClick={this.handleItemClick}
+            active={activeCategory === category.name}
+            onClick={this.handleItemClick}
           />
         )}
       </Menu>
@@ -47,4 +60,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(SideBar)
+export default withRouter(connect(mapStateToProps)(SideBar))

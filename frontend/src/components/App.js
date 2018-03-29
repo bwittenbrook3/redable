@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getPosts, getCategories } from 'actions'
 import { colors } from 'styles'
-import _ from 'lodash'
-import { Grid } from 'semantic-ui-react'
+import { Switch, Route, withRouter } from 'react-router-dom'
 
-import MainContent from './MainContent'
-import SideBar from './SideBar'
+import ListPage from 'pages/List'
+
 
 class App extends Component {
 
@@ -20,15 +19,10 @@ class App extends Component {
     return (
       <div className="App">
 
-        <Grid>
-          <Grid.Column width={4}>
-            <SideBar />
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <MainContent />
-          </Grid.Column>
-        </Grid>
-
+        <Switch>
+          <Route exact path="/" component={ListPage}/>
+          <Route path='/:category' component={ListPage}/>
+        </Switch>
 
         <style jsx>{`
           :global(body) {
@@ -68,13 +62,6 @@ class App extends Component {
 }
 
 
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    categories: _.values(state.categories)
-  }
-}
-
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getPosts: () => dispatch(getPosts()),
@@ -82,4 +69,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(null, mapDispatchToProps)(App));
