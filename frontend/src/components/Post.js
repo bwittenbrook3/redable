@@ -10,7 +10,6 @@ class Post extends Component {
   render() {
     const { post, upvote, downvote } = this.props
 
-    console.log(post.timestamp)
     return (
       <div className="post">
         <div className="votes">

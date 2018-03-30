@@ -10,11 +10,13 @@ import SortBy from 'components/SortBy'
 class List extends Component {
 
   render() {
-    const { match, allPosts } = this.props;
-    const { category } = match.params;
+    const { match, allPosts } = this.props
+    const { category } = match.params
 
     let postsToDisplay =
-      allPosts.filter(post => post.category === category || !category)
+      _.sortBy(allPosts, [this.props.sortBy])
+      .filter(post => post.category === category || !category)
+      .reverse()
 
     return(
       <div className="ListPage">
@@ -40,7 +42,7 @@ class List extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     allPosts: _.values(state.posts),
-    categories: _.values(state.categories)
+    sortBy: state.sortBy
   }
 }
 
