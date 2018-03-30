@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { Grid } from 'semantic-ui-react'
+import { Button, Grid } from 'semantic-ui-react'
 
-import Post from 'components/Post'
+import PostSummary from 'components/PostSummary'
 import SideBar from 'components/SideBar'
 import SortBy from 'components/SortBy'
 
 class List extends Component {
 
   render() {
-    const { match, allPosts } = this.props
+    const { history, match, allPosts } = this.props
     const { category } = match.params
 
-    let postsToDisplay =
+    const postsToDisplay =
       _.sortBy(allPosts, [this.props.sortBy])
       .filter(post => post.category === category || !category)
       .reverse()
@@ -26,14 +26,33 @@ class List extends Component {
           </Grid.Column>
           <Grid.Column width={12}>
             <SortBy />
+
             {postsToDisplay.map( post =>
-              <Post
+              <PostSummary
                 key={post.id}
                 post={post}
               />
             )}
+            
+            <Button
+              className="new-post-button"
+              primary
+              size="large"
+              content="New Post"
+              onClick={() => history.push('/new')}
+            />
           </Grid.Column>
         </Grid>
+
+        <style jsx>{`
+          div {
+
+            :global(.new-post-button) {
+              margin-left: 130px;
+            }
+
+          }
+        `}</style>
       </div>
     )
   }

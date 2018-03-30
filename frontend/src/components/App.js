@@ -6,6 +6,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 
 import ListPage from 'pages/List'
 import DetailPage from 'pages/Detail'
+import NewPostPage from 'pages/NewPost'
 
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
       <div className="App">
 
         <Switch>
+          <Route exact path='/new' component={NewPostPage}/>
           <Route path='/:category/:id' component={DetailPage}/>
           <Route path='/:category' component={ListPage}/>
           <Route exact path="/" component={ListPage}/>
