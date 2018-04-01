@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Button, Grid } from 'semantic-ui-react'
 import { getPosts } from 'actions'
 
-import PostSummary from 'components/PostSummary'
+import PostListView from 'components/PostListView'
 import SideBar from 'components/SideBar'
 import SortBy from 'components/SortBy'
 
@@ -33,7 +33,7 @@ class List extends Component {
             <SortBy />
 
             {postsToDisplay.map( post =>
-              <PostSummary
+              <PostListView
                 key={post.id}
                 post={post}
               />

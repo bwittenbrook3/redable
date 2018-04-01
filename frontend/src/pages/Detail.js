@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Comment, Icon, Segment } from 'semantic-ui-react'
-import { getPost, fetchPostComments } from 'actions'
+import { Comment, Icon  } from 'semantic-ui-react'
+import { getPost, fetchPostComments, voteOnPost } from 'actions'
 import Moment from 'react-moment'
 import _ from 'lodash'
 
 import PostComment from 'components/PostComment'
 import NewComment from 'components/NewComment'
+import Vote from 'components/Vote'
 
 class Detail extends Component {
 
@@ -17,27 +18,41 @@ class Detail extends Component {
   }
 
   render() {
-    const { post, comments, history } = this.props
-    const orderedComments = _.sortBy(comments, 'timestamp')
+    const { post, comments, history, upvote, downvote } = this.props
+    const orderedComments = _.sortBy(comments, 'voteScore').reverse()
 
     return(
       <div className="PostDetail">
+
+
         <a onClick={() => history.push('/')}>
           <Icon name="reply" />back to all posts
         </a>
 
-        <Segment>
-          <h1 className="ui header">
-            {post && post.title}
-            <div className="sub header">
-              Posted by <b>{post && post.author}</b> at <Moment format="YYYY/MM/DD @ HH:MM">{post && post.timestamp}</Moment>
-            </div>
-          </h1>
+        <div className="post">
 
-          <p className="ui header">
-            {post && post.body}
-          </p>
-        </Segment>
+          <Vote
+            voteScore={post && post.voteScore}
+            upvote={() => upvote(post)}
+            downvote={() => downvote(post)}
+          />
+
+          <div className="content">
+            <h1 className="ui header">
+              {post && post.title}
+              <div className="sub header">
+                Posted by <b>{post && post.author}</b> at <Moment format="YYYY/MM/DD @ HH:MM">{post && post.timestamp}</Moment>
+              </div>
+            </h1>
+
+            <p className="ui header b">
+              {post && post.body}
+            </p>
+          </div>
+
+          <div className="clearfix"></div>
+
+        </div>
 
 
         <Comment.Group>
@@ -55,6 +70,20 @@ class Detail extends Component {
         <style jsx>{`
           div > a {
             cursor: pointer;
+          }
+
+          .content {
+            float: left;
+          }
+
+          .post {
+            margin-top: 20px;
+            margin-bottom: 50px;
+            font-size: 25px;
+
+            p {
+              font-size: 20px;
+            }
           }
         `}</style>
       </div>
@@ -74,10 +103,12 @@ const mapStateToProps = (state, ownProps) => {
 
 
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch, {post}) => {
   return {
     getPost: id => dispatch(getPost(id)),
-    fetchPostComments: id => dispatch(fetchPostComments(id))
+    fetchPostComments: id => dispatch(fetchPostComments(id)),
+    upvote: (post) => dispatch(voteOnPost(post, 'upVote')),
+    downvote: (post) => dispatch(voteOnPost(post, 'downVote')),
   }
 }
 

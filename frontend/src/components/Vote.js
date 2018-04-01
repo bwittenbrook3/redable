@@ -1,25 +1,23 @@
 import React from 'react'
 import { Icon } from 'semantic-ui-react'
-import { connect } from 'react-redux'
-import { vote } from 'actions'
 
-function Vote({ post, upvote, downvote }) {
+function Vote({ voteScore, upvote, downvote, small }) {
   return (
-    <div className="votes">
+    <div className="Vote">
       <Icon
-        onClick={() => upvote(post)}
+        onClick={() => upvote()}
         name='caret up'
         link
       />
-      <span className="voteScore">{post.voteScore}</span>
+      <span className="voteScore">{voteScore}</span>
       <Icon
-        onClick={() => downvote(post)}
+        onClick={() => downvote()}
         name='caret down'
         link
       />
 
       <style jsx>{`
-        div.votes {
+        div.Vote {
           float: left;
           width: 100px;
           display: flex;
@@ -28,11 +26,11 @@ function Vote({ post, upvote, downvote }) {
           flex-direction: column;
 
           :global(i.caret) {
-            font-size: 22px;
+            font-size: ${small ? '20' : '22'}px;
           }
 
           .voteScore {
-            font-size: 20px;
+            font-size: ${small ? '16' : '20'}px;
             padding-right: 3px;
           }
         }
@@ -41,11 +39,4 @@ function Vote({ post, upvote, downvote }) {
   )
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    upvote: (post) => dispatch(vote(post, 'upVote')),
-    downvote: (post) => dispatch(vote(post, 'downVote'))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(Vote)
+export default Vote

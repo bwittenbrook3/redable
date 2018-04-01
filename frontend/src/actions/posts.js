@@ -30,7 +30,7 @@ export function createPost(post) {
   }
 }
 
-export function vote(post, option) {
+export function voteOnPost(post, option) {
   return dispatch => {
     const url = `http://localhost:3001/posts/${post.id}`
 

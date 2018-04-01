@@ -14,6 +14,17 @@ export function createComment(comment) {
   }
 }
 
+export function voteOnComment(comment, option) {
+  return dispatch => {
+    const url = `http://localhost:3001/comments/${comment.id}`
+
+    return axios
+      .post( url, { option: option }, { headers: headers } )
+      .then( payload => dispatch(getCommentAsync(payload)) )
+      .then( ({ payload }) => payload.data )
+  }
+}
+
 const getCommentAsync = payload => (
   { type: COMMENTS_GET, payload: payload}
 )

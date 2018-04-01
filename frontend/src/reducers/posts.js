@@ -20,7 +20,7 @@ const commentAddedToPost = (state, { id }) => (
     ...state,
     [id]: {
       ...state[id],
-      voteScore: state[id].voteScore + 1
+      commentCount: state[id].commentCount + 1
     }
   }
 )
