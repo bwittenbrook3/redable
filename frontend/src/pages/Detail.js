@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Comment, Icon, Form, Segment } from 'semantic-ui-react'
+import { Comment, Icon, Segment } from 'semantic-ui-react'
 import { getPost, fetchPostComments } from 'actions'
 import Moment from 'react-moment'
 import _ from 'lodash'
 
+import PostComment from 'components/PostComment'
+import NewComment from 'components/NewComment'
+
 class Detail extends Component {
 
   componentDidMount() {
-    if (!this.props.post) {
-      const { match } = this.props
-      this.props.getPost(match.params.id)
-      this.props.fetchPostComments(match.params.id)
-    }
+    const { match } = this.props
+    this.props.getPost(match.params.id)
+    this.props.fetchPostComments(match.params.id)
   }
 
   render() {
@@ -41,40 +42,19 @@ class Detail extends Component {
 
         <Comment.Group>
           {orderedComments.map(comment =>
-            <Comment
+            <PostComment
               key={comment.id}
-            >
-              <Comment.Content>
-                <Comment.Author as="span">{comment.author}</Comment.Author>
-                <Comment.Metadata>
-                  <Moment format="YYYY/MM/DD @ HH:MM">{comment.timestamp}</Moment>
-                </Comment.Metadata>
-                <Comment.Text>{comment.body}</Comment.Text>
-              </Comment.Content>
-            </Comment>
+              comment={comment}
+            />
           )}
-
-          <h3 className="ui header"> New Comment</h3>
-          <Form reply>
-            <Form.Field>
-              <label>Author</label>
-              <input placeholder='Author' />
-            </Form.Field>
-            <Form.Field>
-              <label>Body</label>
-              <textarea
-                placeholder='Comment'
-              />
-            </Form.Field>
-            <Button content='Add Comment' labelPosition='left' icon='edit' primary />
-          </Form>
+          <NewComment
+            parentId={post && post.id}
+          />
         </Comment.Group>
 
         <style jsx>{`
-          div {
-            > a {
-              cursor: pointer;
-            }
+          div > a {
+            cursor: pointer;
           }
         `}</style>
       </div>

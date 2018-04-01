@@ -1,4 +1,4 @@
-import { POSTS_INDEX, POSTS_GET, COMMENTS_GET_SOME } from './types';
+import { POSTS_INDEX, POSTS_GET, COMMENTS_GET_MANY } from './types';
 import axios from 'axios';
 
 const headers = { 'Authorization': 'whatever-you-want' };
@@ -61,5 +61,5 @@ const getPostAsync = payload => (
 )
 
 const getCommentsAsync = payload => (
-  { type: COMMENTS_GET_SOME, payload: payload }
+  { type: COMMENTS_GET_MANY, payload: payload }
 )

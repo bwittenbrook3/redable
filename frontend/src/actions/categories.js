@@ -1,4 +1,4 @@
-import { CATEGORIES_GET } from './types';
+import { CATEGORIES_INDEX } from './types';
 import axios from 'axios';
 
 export function getCategories() {
@@ -14,7 +14,7 @@ export function getCategories() {
 
 function getCategoriesAsync(posts){
   return {
-    type: CATEGORIES_GET,
+    type: CATEGORIES_INDEX,
     payload: posts
   };
 }

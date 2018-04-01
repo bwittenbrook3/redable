@@ -1,21 +1,38 @@
-import { POSTS_INDEX, POSTS_GET } from '../actions/types';
+import { POSTS_INDEX, POSTS_GET, POSTS_ADDED_COMMENT } from '../actions/types';
 import _ from 'lodash';
 
-
-function insertPost(state, action) {
-  const post = action.payload.data;
-  return {
+const getPosts = (state, { payload }) => (
+  {
     ...state,
-    [post.id]: post
+    ..._.keyBy(payload.data, 'id')
   }
-}
+)
+
+const getPost = (state, { payload }) => (
+  {
+    ...state,
+    [payload.data.id]: payload.data
+  }
+)
+
+const commentAddedToPost = (state, { id }) => (
+  {
+    ...state,
+    [id]: {
+      ...state[id],
+      voteScore: state[id].voteScore + 1
+    }
+  }
+)
 
 export default function(state={}, action) {
   switch (action.type) {
     case POSTS_INDEX:
-      return _.keyBy(action.payload.data, 'id');
+      return getPosts(state, action)
     case POSTS_GET:
-      return insertPost(state, action);
+      return getPost(state, action);
+    case POSTS_ADDED_COMMENT:
+      return commentAddedToPost(state, action);
     default:
       return state;
   }
