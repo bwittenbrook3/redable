@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Comment, Icon, Form, Segment } from 'semantic-ui-react'
-import { getPost } from 'actions'
+import { getPost, fetchPostComments } from 'actions'
 import Moment from 'react-moment'
+import _ from 'lodash'
 
 class Detail extends Component {
 
@@ -10,15 +11,17 @@ class Detail extends Component {
     if (!this.props.post) {
       const { match } = this.props
       this.props.getPost(match.params.id)
+      this.props.fetchPostComments(match.params.id)
     }
   }
 
   render() {
-    const { post, history } = this.props
+    const { post, comments, history } = this.props
+    const orderedComments = _.sortBy(comments, 'timestamp')
 
     return(
       <div className="PostDetail">
-        <a onClick={() => history.goBack()}>
+        <a onClick={() => history.push('/')}>
           <Icon name="reply" />back to all posts
         </a>
 
@@ -37,18 +40,21 @@ class Detail extends Component {
 
 
         <Comment.Group>
-          <Comment>
-            <Comment.Content>
-              <Comment.Author as='a'>Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-            </Comment.Content>
-          </Comment>
+          {orderedComments.map(comment =>
+            <Comment
+              key={comment.id}
+            >
+              <Comment.Content>
+                <Comment.Author as="span">{comment.author}</Comment.Author>
+                <Comment.Metadata>
+                  <Moment format="YYYY/MM/DD @ HH:MM">{comment.timestamp}</Moment>
+                </Comment.Metadata>
+                <Comment.Text>{comment.body}</Comment.Text>
+              </Comment.Content>
+            </Comment>
+          )}
 
-          <div className="ui divider"></div>
-
+          <h3 className="ui header"> New Comment</h3>
           <Form reply>
             <Form.Field>
               <label>Author</label>
@@ -81,7 +87,8 @@ const mapStateToProps = (state, ownProps) => {
   const { id } = match.params
 
   return {
-    post: state.posts[id]
+    post: state.posts[id],
+    comments: _.values(state.comments).filter(post => post.parentId === id)
   }
 }
 
@@ -89,7 +96,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getPost: (id) => dispatch(getPost(id))
+    getPost: id => dispatch(getPost(id)),
+    fetchPostComments: id => dispatch(fetchPostComments(id))
   }
 }
 

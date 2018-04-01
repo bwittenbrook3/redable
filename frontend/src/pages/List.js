@@ -11,7 +11,7 @@ import SortBy from 'components/SortBy'
 class List extends Component {
 
   componentDidMount() {
-    this.props.getPosts();
+    this.props.getPosts()
   }
 
   render() {
@@ -26,10 +26,10 @@ class List extends Component {
     return(
       <div className="ListPage">
         <Grid>
-          <Grid.Column width={4}>
+          <Grid.Column width={2}>
             <SideBar />
           </Grid.Column>
-          <Grid.Column width={12}>
+          <Grid.Column width={14}>
             <SortBy />
 
             {postsToDisplay.map( post =>

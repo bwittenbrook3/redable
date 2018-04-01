@@ -23,11 +23,29 @@ class SortBy extends Component {
           />
         </Menu>
 
-        <style jsx>{`
+        <style jsx global>{`
+
           .SortBy {
-            margin-left: 35px;
+            margin-left: 128px;
           }
 
+          .SortBy .ui.text.menu {
+
+
+            font-size: 18px;
+
+            a.item {
+
+              &:hover {
+                color: palevioletred !important;
+              }
+
+              &.active {
+                color: palevioletred !important;
+                text-decoration: underline;
+              }
+            }
+          }
         `}</style>
       </div>
     )

@@ -1,4 +1,4 @@
-import { POSTS_GET, POST_GET } from '../actions/types';
+import { POSTS_INDEX, POSTS_GET } from '../actions/types';
 import _ from 'lodash';
 
 
@@ -12,9 +12,9 @@ function insertPost(state, action) {
 
 export default function(state={}, action) {
   switch (action.type) {
-    case POSTS_GET:
+    case POSTS_INDEX:
       return _.keyBy(action.payload.data, 'id');
-    case POST_GET:
+    case POSTS_GET:
       return insertPost(state, action);
     default:
       return state;

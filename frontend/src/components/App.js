@@ -7,7 +7,11 @@ import NewPostPage from 'pages/NewPost'
 
 const App = () => {
   return (
-    <div>
+    <div className="App">
+
+      <h1 className="ui header title">Redable</h1>
+
+      <div className="ui divider"></div>
 
       <Switch>
         <Route exact path='/new' component={NewPostPage}/>
@@ -20,6 +24,13 @@ const App = () => {
         div {
           max-width: 998px;
           margin: 25px auto 0;
+        }
+
+        div.App > h1.title {
+          color: #666666;
+          font-size: 50px;
+          text-align: center;
+          text-transform: uppercase;
         }
       `}</style>
     </div>
