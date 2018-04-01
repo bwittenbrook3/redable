@@ -3,8 +3,13 @@ import { Menu } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
+import { getCategories } from 'actions'
 
 class SideBar extends Component {
+
+  componentDidMount() {
+    this.props.getCategories();
+  }
 
   handleItemClick = (e, { name }) => {
 
@@ -32,7 +37,7 @@ class SideBar extends Component {
       category === 'All' ? undefined : category
 
     return (
-      <Menu text vertical>
+      <Menu text vertical className="category-menu">
         <Menu.Item header>Categories</Menu.Item>
 
         <Menu.Item
@@ -49,6 +54,21 @@ class SideBar extends Component {
             onClick={this.handleItemClick}
           />
         )}
+
+        <style jsx global>{`
+          .category-menu a.item {
+            font-size: 22px;
+
+            &:hover {
+              color: palevioletred !important;
+            }
+
+            &.active {
+              color: palevioletred !important;
+              text-decoration: underline;
+            }
+          }
+        `}</style>
       </Menu>
     )
   }
@@ -60,4 +80,11 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(SideBar))
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getCategories: () => dispatch(getCategories())
+  }
+}
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SideBar))

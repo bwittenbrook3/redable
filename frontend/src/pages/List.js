@@ -2,12 +2,17 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { Button, Grid } from 'semantic-ui-react'
+import { getPosts } from 'actions'
 
 import PostSummary from 'components/PostSummary'
 import SideBar from 'components/SideBar'
 import SortBy from 'components/SortBy'
 
 class List extends Component {
+
+  componentDidMount() {
+    this.props.getPosts();
+  }
 
   render() {
     const { history, match, allPosts } = this.props
@@ -33,7 +38,7 @@ class List extends Component {
                 post={post}
               />
             )}
-            
+
             <Button
               className="new-post-button"
               primary
@@ -65,4 +70,10 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(List);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getPosts: () => dispatch(getPosts())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

@@ -5,12 +5,40 @@ const headers = { 'Authorization': 'whatever-you-want' };
 
 export function getPosts() {
   return dispatch => {
-    axios.get('http://localhost:3001/posts', {headers: headers})
-      .then(posts => {
-        dispatch(getPostsAsync(posts));
-      });
+    return axios
+      .get('http://localhost:3001/posts', {headers: headers} )
+      .then( posts => dispatch(getPostsAsync(posts)) )
   }
 }
+
+export function getPost(id) {
+  return dispatch => {
+    return axios
+      .get( `http://localhost:3001/posts/${id}`, {headers: headers} )
+      .then( post => dispatch(getPostAsync(post)) )
+  }
+}
+
+export function createPost(post) {
+  return dispatch => {
+    return axios
+      .post( 'http://localhost:3001/posts', post, {headers: headers} )
+      .then( post => dispatch(getPostAsync(post)) )
+  }
+}
+
+export function vote(post, option) {
+  return dispatch => {
+
+    const url = `http://localhost:3001/posts/${post.id}`
+
+    return axios
+      .post( url, { option: option }, { headers: headers } )
+      .then( post => dispatch(getPostAsync(post)) )
+  }
+}
+
+
 
 function getPostsAsync(posts){
   return {
@@ -19,39 +47,7 @@ function getPostsAsync(posts){
   };
 }
 
-export function createPost(post) {
-  return dispatch => {
-    return axios.post(
-        'http://localhost:3001/posts',
-        post, {headers: headers}
-      )
-      .then(post => dispatch(createPostAsync(post)) )
-  }
-}
-
-function createPostAsync(post) {
-  return {
-    type: POST_GET,
-    payload: post
-  };
-}
-
-export function vote(post, option) {
-  return dispatch => {
-
-    axios
-      .post(`http://localhost:3001/posts/${post.id}`,
-        { option: option },
-        { headers: headers }
-      )
-      .then(post => {
-        dispatch(voteAsync(post));
-      })
-    ;
-  }
-}
-
-function voteAsync(post){
+function getPostAsync(post) {
   return {
     type: POST_GET,
     payload: post

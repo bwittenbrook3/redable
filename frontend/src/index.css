@@ -2,4 +2,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  padding: 20px;
+  background-color: #ggg;
+}
+
+p {
+  color: grey;
 }
