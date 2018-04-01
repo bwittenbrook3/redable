@@ -9,7 +9,7 @@ import PostComment from 'components/PostComment'
 import NewComment from 'components/NewComment'
 import Vote from 'components/Vote'
 
-class Detail extends Component {
+class PostDetail extends Component {
 
   componentDidMount() {
     const { match } = this.props
@@ -113,4 +113,4 @@ const mapDispatchToProps = (dispatch, {post}) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Detail)
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)

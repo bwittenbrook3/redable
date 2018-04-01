@@ -2,20 +2,22 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import ListPage from 'pages/List'
-import DetailPage from 'pages/Detail'
+import PostDetailPage from 'pages/PostDetail'
+import EditPostPage from 'pages/EditPost'
 import NewPostPage from 'pages/NewPost'
 
 const App = () => {
   return (
     <div className="App">
-
+      
       <h1 className="ui header title">Redable</h1>
 
       <div className="ui divider"></div>
 
       <Switch>
         <Route exact path='/new' component={NewPostPage}/>
-        <Route path='/:category/:id' component={DetailPage}/>
+        <Route exact path='/:category/:id/edit' component={EditPostPage}/>
+        <Route exact path='/:category/:id' component={PostDetailPage}/>
         <Route path='/:category' component={ListPage}/>
         <Route exact path="/" component={ListPage}/>
       </Switch>

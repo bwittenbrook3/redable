@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 import Moment from 'react-moment'
 import { connect } from 'react-redux'
 import { voteOnPost } from 'actions'
+import { withRouter } from 'react-router-dom'
 
 import Vote from './Vote'
 
-const PostListView = ({ post, downvote, upvote }) => (
+const PostListView = ({ post, downvote, upvote , history }) => (
   <div className="post">
     <Vote
       voteScore={post.voteScore}
@@ -35,6 +36,7 @@ const PostListView = ({ post, downvote, upvote }) => (
           basic
           content="edit"
           size="mini"
+          onClick={() => history.push(`/${post.category}/${post.id}/edit`)}
         />
         <Button
           basic
@@ -79,4 +81,4 @@ const mapDispatchToProps = (dispatch, ownProps) => (
   }
 )
 
-export default connect(null, mapDispatchToProps)(PostListView)
+export default withRouter(connect(null, mapDispatchToProps)(PostListView))
