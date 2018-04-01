@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { Button, Form, Icon, Dropdown } from 'semantic-ui-react'
+import { Button, Form, Icon, Dropdown, Message } from 'semantic-ui-react'
+import uuid from 'uuid/v4'
+import { createPost } from 'actions'
 
 class NewPost extends Component {
 
@@ -9,7 +11,8 @@ class NewPost extends Component {
     title: null,
     author: null,
     category: null,
-    body: null
+    body: null,
+    errors: []
   }
 
   handleChange(prop, event) {
@@ -20,7 +23,50 @@ class NewPost extends Component {
     this.setState({category: dropdown.value})
   }
 
+  submit() {
+
+    const post = {
+      ...this.state,
+      id: uuid(),
+      timestamp: Date.now(),
+      errors: undefined
+    }
+
+    const errors = this.validatePost(post)
+    this.setState({errors: errors})
+
+    if (errors.length === 0) {
+      const { history } = this.props
+
+      this.props.createPost(post)
+      .then(post => history.goBack())
+    }
+  }
+
+  validatePost(post) {
+    let errors = []
+
+    if (_.isEmpty(post.title)) {
+      errors.push("Title must not be blank")
+    }
+
+    if (_.isEmpty(post.author)) {
+      errors.push("Author must not be blank")
+    }
+
+    if (_.isEmpty(post.category)) {
+      errors.push("Category must not be blank")
+    }
+
+    if (_.isEmpty(post.body)) {
+      errors.push("Author must not be blank")
+    }
+
+    return errors
+  }
+
   render() {
+    const { errors } = this.state
     const { history, categories } = this.props
 
     const categoryOptions = categories.map(category => {
@@ -39,7 +85,23 @@ class NewPost extends Component {
         <h1 className="ui header">
           New Post
         </h1>
-        <Form>
+        <Form
+          error={!_.isEmpty(errors)}
+          onSubmit={() => this.submit()}
+        >
+          <Message
+            error
+            onDismiss={() => this.setState({errors: []})}
+          >
+            <Message.Header>
+              Error
+            </Message.Header>
+            <ul>
+              {errors.map( (error, index) =>
+                <li key={index}>{error}</li>
+              )}
+            </ul>
+          </Message>
           <Form.Field required>
             <label>Title</label>
             <input
@@ -93,4 +155,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(NewPost)
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    createPost: (post) => dispatch(createPost(post)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewPost)

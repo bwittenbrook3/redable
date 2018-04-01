@@ -1,4 +1,4 @@
-import { POSTS_GET, POSTS_VOTE } from './types';
+import { POSTS_GET, POST_GET } from './types';
 import axios from 'axios';
 
 const headers = { 'Authorization': 'whatever-you-want' };
@@ -19,6 +19,23 @@ function getPostsAsync(posts){
   };
 }
 
+export function createPost(post) {
+  return dispatch => {
+    return axios.post(
+        'http://localhost:3001/posts',
+        post, {headers: headers}
+      )
+      .then(post => dispatch(createPostAsync(post)) )
+  }
+}
+
+function createPostAsync(post) {
+  return {
+    type: POST_GET,
+    payload: post
+  };
+}
+
 export function vote(post, option) {
   return dispatch => {
 
@@ -36,7 +53,7 @@ export function vote(post, option) {
 
 function voteAsync(post){
   return {
-    type: POSTS_VOTE,
+    type: POST_GET,
     payload: post
   };
 }
