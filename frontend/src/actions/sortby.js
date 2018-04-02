@@ -1,8 +1,5 @@
 import { SORT_BY } from './types';
 
-export function sortBy(item) {
-  return {
-    type: SORT_BY,
-    payload: item
-  };
-}
+export const sortBy = payload => (
+  {type: SORT_BY, payload}
+)

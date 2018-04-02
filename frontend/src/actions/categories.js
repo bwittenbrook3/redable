@@ -6,15 +6,12 @@ export function getCategories() {
 
     const headers = { 'Authorization': 'whatever-you-want' };
     axios.get('http://localhost:3001/categories', {headers: headers})
-      .then(posts => {
-        dispatch(getCategoriesAsync(posts));
-      });
+      .then( posts => { dispatch(getCategoriesAsync(posts)) })
   }
 }
 
-function getCategoriesAsync(posts){
-  return {
-    type: CATEGORIES_INDEX,
-    payload: posts
-  };
-}
+const getCategoriesAsync = payload => (
+  {
+    type: CATEGORIES_INDEX, payload
+  }
+)
