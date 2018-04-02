@@ -52,6 +52,22 @@ export function fetchPostComments(id) {
   }
 }
 
+export function editPost(id, post) {
+  return dispatch => {
+    const url = `http://localhost:3001/posts/${id}`
+
+    const data = {
+      title: post.title,
+      body: post.body
+    }
+
+    return axios
+      .put( url, data, { headers: headers } )
+      .then( payload => dispatch(getPostAsync(payload)) )
+      .then( ({ payload }) => payload.data )
+  }
+}
+
 const getPostsAsync = payload => (
   { type: POSTS_INDEX, payload: payload}
 )

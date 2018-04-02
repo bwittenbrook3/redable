@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getPost } from 'actions'
+import { getPost, editPost } from 'actions'
+import { Icon } from 'semantic-ui-react'
+
+import PostForm from 'components/PostForm'
 
 class EditPost extends Component {
 
@@ -9,18 +12,36 @@ class EditPost extends Component {
   }
 
   render() {
+    const { post, editPost, history } = this.props
+
     return (
       <div className="EditPost">
-        Edit
+        <a onClick={() => history.goBack()}>
+          <Icon name="reply" />back to all posts
+        </a>
+        <div className="ui divider"></div>
+        {post &&
+          <PostForm
+            post={post}
+            save={editPost}
+          />
+        }
       </div>
     )
   }
 }
 
-const mapDispatchToProps = (dispatch, { match }) => (
+const mapStateToProps = (state, { match }) => (
   {
-    getPost: () => dispatch(getPost(match.params.id))
+    post: state.posts[match.params.id]
   }
 )
 
-export default connect(null, mapDispatchToProps)(EditPost)
+const mapDispatchToProps = (dispatch, { match }) => (
+  {
+    getPost: () => dispatch(getPost(match.params.id)),
+    editPost: (post) => dispatch(editPost(match.params.id, post))
+  }
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost)
