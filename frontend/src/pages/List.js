@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { Button, Grid } from 'semantic-ui-react'
+import { Button, Comment, Grid } from 'semantic-ui-react'
 import { getPosts } from 'actions'
 
 import PostListView from 'components/PostListView'
@@ -32,12 +32,14 @@ class List extends Component {
           <Grid.Column width={14}>
             <SortBy />
 
-            {postsToDisplay.map( post =>
-              <PostListView
-                key={post.id}
-                post={post}
-              />
-            )}
+            <Comment.Group size="massive">
+              {postsToDisplay.map( post =>
+                <PostListView
+                  key={post.id}
+                  post={post}
+                />
+              )}
+            </Comment.Group>
 
             <Button
               className="new-post-button"
@@ -51,9 +53,11 @@ class List extends Component {
 
         <style jsx>{`
           div {
-
+            :global(.ui.comments) {
+              margin-top: 0;
+            }
             :global(.new-post-button) {
-              margin-left: 130px;
+              margin-left: 100px;
             }
 
           }

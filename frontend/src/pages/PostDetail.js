@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Comment, Icon  } from 'semantic-ui-react'
+import { Comment, Icon, Header  } from 'semantic-ui-react'
 import { getPost, fetchPostComments, voteOnPost } from 'actions'
-import Moment from 'react-moment'
 import _ from 'lodash'
 
+import PostListView from 'components/PostListView'
 import PostComment from 'components/PostComment'
 import NewComment from 'components/NewComment'
-import Vote from 'components/Vote'
 
 class PostDetail extends Component {
 
@@ -18,44 +17,37 @@ class PostDetail extends Component {
   }
 
   render() {
-    const { post, comments, history, upvote, downvote } = this.props
+    const { post, comments, history } = this.props
     const orderedComments = _.sortBy(comments, 'voteScore').reverse()
 
     return(
       <div className="PostDetail">
 
-
         <a onClick={() => history.push('/')}>
           <Icon name="reply" />back to all posts
         </a>
 
-        <div className="post">
+        <div className="ui divider"></div>
 
-          <Vote
-            voteScore={post && post.voteScore}
-            upvote={() => upvote(post)}
-            downvote={() => downvote(post)}
-          />
+        {post &&
+          <div className="post">
+            <Comment.Group size="massive">
+              {post &&
+                <PostListView post={post} />
+              }
+            </Comment.Group>
 
-          <div className="content">
-            <h1 className="ui header">
-              {post && post.title}
-              <div className="sub header">
-                Posted by <b>{post && post.author}</b> at <Moment format="YYYY/MM/DD @ HH:MM">{post && post.timestamp}</Moment>
-              </div>
-            </h1>
-
-            <p className="ui header b">
-              {post && post.body}
+            <p className="post-body">
+              {post.body}
             </p>
+
           </div>
-
-          <div className="clearfix"></div>
-
-        </div>
+        }
 
 
-        <Comment.Group>
+
+        <Comment.Group size="large">
+          <Header as='h3' dividing>Comments</Header>
           {orderedComments.map(comment =>
             <PostComment
               key={comment.id}
@@ -81,8 +73,9 @@ class PostDetail extends Component {
             margin-bottom: 50px;
             font-size: 25px;
 
-            p {
+            .post-body {
               font-size: 20px;
+              margin-left: 100px;
             }
           }
         `}</style>

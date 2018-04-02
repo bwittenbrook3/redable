@@ -7,7 +7,7 @@ import { voteOnComment } from 'actions'
 import Vote from './Vote'
 
 const PostComment = ({ comment, upvote, downvote }) => (
-  <div className="PostComment">
+  <Comment className="PostComment">
 
     <Vote
       small
@@ -16,19 +16,23 @@ const PostComment = ({ comment, upvote, downvote }) => (
       downvote={downvote}
     />
 
-    <Comment>
-      <Comment.Content>
-        <Comment.Author as="span">{comment.author}</Comment.Author>
-        <Comment.Metadata>
-          <Moment format="YYYY/MM/DD @ HH:MM">{comment.timestamp}</Moment>
-        </Comment.Metadata>
-        <Comment.Text>{comment.body}</Comment.Text>
-      </Comment.Content>
-    </Comment>
-
-    <div className="clearfix"></div>
-
+    <Comment.Content>
+      <Comment.Author as="span">{comment.author}</Comment.Author>
+      <Comment.Metadata>
+        <Moment format="MMMM Do YYYY, h:mm a">{comment.timestamp}</Moment>
+      </Comment.Metadata>
+      <Comment.Text>{comment.body}</Comment.Text>
+    </Comment.Content>
+    
     <style jsx>{`
+      :global(.metadata) {
+        display: block !important;
+        margin-left: 0 !important;
+        b {
+          margin: 0 !important;
+        }
+      }
+
       div {
         margin: 25px 0;
       }
@@ -39,7 +43,7 @@ const PostComment = ({ comment, upvote, downvote }) => (
         clear: both;
       }
     `}</style>
-  </div>
+  </Comment>
 )
 
 const mapDispatchToProps = (dispatch, { comment }) => (

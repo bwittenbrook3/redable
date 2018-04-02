@@ -26,7 +26,7 @@ class SortBy extends Component {
         <style jsx global>{`
 
           .SortBy {
-            margin-left: 128px;
+            margin-left: 100px;
           }
 
           .SortBy .ui.text.menu {

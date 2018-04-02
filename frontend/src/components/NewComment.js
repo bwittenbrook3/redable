@@ -53,7 +53,6 @@ class NewComment extends Component {
 
     return(
       <div className="NewComment">
-        <h3 className="ui header"> New Comment</h3>
         <Form
           reply
           onSubmit={() => this.submit()}
