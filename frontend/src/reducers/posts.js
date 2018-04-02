@@ -1,4 +1,4 @@
-import { POSTS_INDEX, POSTS_GET, POSTS_ADDED_COMMENT } from '../actions/types';
+import { POSTS_INDEX, POSTS_GET, POSTS_DELETE, POSTS_ADDED_COMMENT } from '../actions/types';
 import _ from 'lodash';
 
 const getPosts = (state, { payload }) => (
@@ -25,12 +25,17 @@ const commentAddedToPost = (state, { id }) => (
   }
 )
 
+const deletePost = (state, { payload }) =>
+  _.omit(state, [payload])
+
 export default function(state={}, action) {
   switch (action.type) {
     case POSTS_INDEX:
       return getPosts(state, action)
     case POSTS_GET:
       return getPost(state, action);
+    case POSTS_DELETE:
+      return deletePost(state, action);
     case POSTS_ADDED_COMMENT:
       return commentAddedToPost(state, action);
     default:

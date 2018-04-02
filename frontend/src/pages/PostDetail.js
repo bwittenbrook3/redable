@@ -10,14 +10,22 @@ import NewComment from 'components/NewComment'
 
 class PostDetail extends Component {
 
+  state = {
+    error404: false
+  }
+
   componentDidMount() {
     const { match } = this.props
+
     this.props.getPost(match.params.id)
+    .catch(() => this.setState({error404: true}))
+
     this.props.fetchPostComments(match.params.id)
   }
 
   render() {
     const { post, comments, history } = this.props
+    const { error404 } = this.state
     const orderedComments = _.sortBy(comments, 'voteScore').reverse()
 
     return(
@@ -30,36 +38,47 @@ class PostDetail extends Component {
         <div className="ui divider"></div>
 
         {post &&
-          <div className="post">
-            <Comment.Group size="massive">
-              {post &&
-                <PostListView post={post} />
-              }
+          <div>
+            <div className="post">
+              <Comment.Group size="massive">
+                {post &&
+                  <PostListView post={post} />
+                }
+              </Comment.Group>
+
+              <p className="post-body">
+                {post.body}
+              </p>
+            </div>
+            <Comment.Group size="large">
+              <Header as='h3' dividing>Comments</Header>
+              {orderedComments.map(comment =>
+                <PostComment
+                  key={comment.id}
+                  comment={comment}
+                />
+              )}
+              <NewComment
+                parentId={post && post.id}
+              />
             </Comment.Group>
-
-            <p className="post-body">
-              {post.body}
-            </p>
-
           </div>
         }
 
-
-
-        <Comment.Group size="large">
-          <Header as='h3' dividing>Comments</Header>
-          {orderedComments.map(comment =>
-            <PostComment
-              key={comment.id}
-              comment={comment}
-            />
-          )}
-          <NewComment
-            parentId={post && post.id}
-          />
-        </Comment.Group>
+        {error404 &&
+          <h1 className="ui header error">Error!
+            <div className="sub header">This post could not be found</div>
+          </h1>
+        }
 
         <style jsx>{`
+
+          .ui.header.error {
+            color: red;
+            text-align: center;
+            font-size: 60px;
+            text-transform: uppercase;
+          }
           div > a {
             cursor: pointer;
           }

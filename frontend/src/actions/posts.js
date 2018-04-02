@@ -1,4 +1,4 @@
-import { POSTS_INDEX, POSTS_GET, COMMENTS_GET_MANY } from './types';
+import { POSTS_INDEX, POSTS_GET, POSTS_DELETE, COMMENTS_GET_MANY } from './types';
 import axios from 'axios';
 
 const headers = { 'Authorization': 'whatever-you-want' };
@@ -68,14 +68,28 @@ export function editPost(id, post) {
   }
 }
 
+export function deletePost(id) {
+  return dispatch => {
+    const url = `http://localhost:3001/posts/${id}`
+
+    return axios
+      .delete( url, { headers: headers } )
+      .then( () => dispatch(deletePostAsync(id)) )
+  }
+}
+
 const getPostsAsync = payload => (
-  { type: POSTS_INDEX, payload: payload}
+  { type: POSTS_INDEX, payload }
 )
 
 const getPostAsync = payload => (
-  { type: POSTS_GET, payload: payload}
+  { type: POSTS_GET, payload }
+)
+
+const deletePostAsync = payload => (
+  { type: POSTS_DELETE, payload}
 )
 
 const getCommentsAsync = payload => (
-  { type: COMMENTS_GET_MANY, payload: payload }
+  { type: COMMENTS_GET_MANY, payload }
 )

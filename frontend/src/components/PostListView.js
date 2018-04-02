@@ -3,12 +3,12 @@ import { Comment, Label } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import Moment from 'react-moment'
 import { connect } from 'react-redux'
-import { voteOnPost } from 'actions'
+import { voteOnPost, deletePost } from 'actions'
 import { withRouter } from 'react-router-dom'
 
 import Vote from './Vote'
 
-const PostListView = ({ post, downvote, upvote , history }) => (
+const PostListView = ({ post, downvote, upvote , history, deletePost }) => (
   <Comment className="PostListView">
     <Vote
       voteScore={post.voteScore}
@@ -35,29 +35,15 @@ const PostListView = ({ post, downvote, upvote , history }) => (
       >
         Edit
       </Comment.Action>
+      <Comment.Action
+        onClick={() => {
+          deletePost()
+          .then(() => history.push("/"))
+        }}
+      >
+        Delete
+      </Comment.Action>
     </Comment.Actions>
-
-
-    {/* <div className="actions">
-      <Link to={`/${post.category}/${post.id}`}>
-      <Label
-      content={post.commentCount}
-      icon="comment"
-      />
-        </Link>
-        <Button
-      basic
-      content="edit"
-      size="mini"
-      onClick={() => history.push(`/${post.category}/${post.id}/edit`)}
-        />
-        <Button
-      basic
-      content="delete"
-      size="mini"
-        />
-      </div>
-    </div> */}
 
     <div className="clearfix"></div>
 
@@ -81,7 +67,8 @@ const PostListView = ({ post, downvote, upvote , history }) => (
 const mapDispatchToProps = (dispatch, ownProps) => (
   {
     upvote: () => dispatch(voteOnPost(ownProps.post, 'upVote')),
-    downvote: () => dispatch(voteOnPost(ownProps.post, 'downVote'))
+    downvote: () => dispatch(voteOnPost(ownProps.post, 'downVote')),
+    deletePost: () => dispatch(deletePost(ownProps.post.id)),
   }
 )
 
